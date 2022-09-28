@@ -63,6 +63,14 @@ import java.awt.Panel;
  */
 class MethodAreaPanel extends Panel {
 
+	private static final String CENTER = "Center";
+
+	private static final String TIMES_ROMAN = "TimesRoman";
+
+	private static final String HELVETICA = "Helvetica";
+
+	private static final long serialVersionUID = 1L;
+
 	private int memoryLocationsVisibleCount;
 
 	private Label[] pointer;
@@ -90,16 +98,16 @@ class MethodAreaPanel extends Panel {
 		logicalValue = new Label[memoryLocationsVisibleCount];
 
 		// Initialize the title
-		Label title = new Label(StringTable.theMethod, Label.CENTER);
-		title.setFont(new Font("Helvetica", Font.BOLD, 11));
+		Label title = new Label(StringTable.THE_METHOD, Label.CENTER);
+		title.setFont(new Font(HELVETICA, Font.BOLD, 11));
 
 		// Initialize the labelled pc register panel
 		Panel registerPanel = new Panel();
 		registerPanel.setLayout(new GridLayout(1, 2, 5, 5));
 		pcRegister = new ColoredLabel("00000000", Label.CENTER, Color.lightGray);
-		pcRegister.setFont(new Font("TimesRoman", Font.PLAIN, 11));
-		Label pcRegTitle = new Label(StringTable.pc, Label.RIGHT);
-		pcRegTitle.setFont(new Font("Helvetica", Font.ITALIC, 11));
+		pcRegister.setFont(new Font(TIMES_ROMAN, Font.PLAIN, 11));
+		Label pcRegTitle = new Label(StringTable.PC, Label.RIGHT);
+		pcRegTitle.setFont(new Font(HELVETICA, Font.ITALIC, 11));
 		registerPanel.add(pcRegTitle);
 		registerPanel.add(pcRegister);
 
@@ -107,25 +115,25 @@ class MethodAreaPanel extends Panel {
 		Panel titleRegisterPanel = new Panel();
 		titleRegisterPanel.setLayout(new BorderLayout());
 		titleRegisterPanel.add("West", registerPanel);
-		titleRegisterPanel.add("Center", title);
+		titleRegisterPanel.add(CENTER, title);
 
 		// Initialize column titles
 		Panel columnTitles = new Panel();
 		int[] hComponentCellWidths = { 2, 2, 2, 3 };
 		columnTitles.setLayout(new GridSnapLayout(1, 9, hComponentCellWidths));
-		columnTitles.setFont(new Font("Helvetica", Font.ITALIC, 11));
+		columnTitles.setFont(new Font(HELVETICA, Font.ITALIC, 11));
 		columnTitles.add(new Label("", Label.CENTER));
-		columnTitles.add(new Label(StringTable.offset, Label.CENTER));
-		columnTitles.add(new Label(StringTable.bytecodes, Label.CENTER));
-		columnTitles.add(new Label(StringTable.mnemonics, Label.LEFT));
+		columnTitles.add(new Label(StringTable.OFFSET, Label.CENTER));
+		columnTitles.add(new Label(StringTable.BYTECODES, Label.CENTER));
+		columnTitles.add(new Label(StringTable.MNEMONICS, Label.LEFT));
 
 		// Initialize the 4 column view of the method
 		Panel methodView = new Panel();
 		methodView.setLayout(new GridSnapLayout(memoryLocationsVisibleCount, 9, hComponentCellWidths));
 		methodView.setBackground(Color.lightGray);
-		Font plainFont = new Font("TimesRoman", Font.PLAIN, 11);
+		Font plainFont = new Font(TIMES_ROMAN, Font.PLAIN, 11);
 		methodView.setFont(plainFont);
-		Font italicFont = new Font("TimesRoman", Font.ITALIC, 11);
+		Font italicFont = new Font(TIMES_ROMAN, Font.ITALIC, 11);
 
 		for (int i = 0; i < memoryLocationsVisibleCount; ++i) {
 
@@ -146,11 +154,11 @@ class MethodAreaPanel extends Panel {
 		Panel methodViewWithTitles = new Panel();
 		methodViewWithTitles.setLayout(new BorderLayout());
 		methodViewWithTitles.add("North", columnTitles);
-		methodViewWithTitles.add("Center", methodView);
+		methodViewWithTitles.add(CENTER, methodView);
 
 		setLayout(new BorderLayout());
 		add("North", titleRegisterPanel);
-		add("Center", methodViewWithTitles);
+		add(CENTER, methodViewWithTitles);
 
 		// Call updateView() first because updateProgramCounter() only changes
 		// the address, byte, and mnemonic columns if the program counter has
@@ -202,15 +210,15 @@ class MethodAreaPanel extends Panel {
 		}
 
 		// Place the "pc>" pointer
-		pointer[newPCValue - firstVisibleRow].setText(StringTable.pcPointer);
+		pointer[newPCValue - firstVisibleRow].setText(StringTable.PC_POINTER);
 		currentProgramCounterRow = newPCValue - firstVisibleRow;
 
 		// Set the program counter register
-		// HexString hexString = new HexString(newPCValue, 8);
 		pcRegister.setLabelText("    " + Integer.toString(newPCValue));
 	}
 
-	public Insets insets() {
+	@Override
+	public Insets getInsets() {
 		return new Insets(5, 5, 5, 5);
 	}
 }

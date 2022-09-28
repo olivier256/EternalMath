@@ -57,6 +57,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.Panel;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An applet that simulates the Java Virtual Machine executing a sequence of
@@ -64,34 +66,123 @@ import java.awt.Panel;
  *
  * @author Bill Venners
  */
+@SuppressWarnings("deprecation")
 public abstract class JVMSimulator extends Applet implements Runnable {
 
+	static final Map<Integer, String> EXPLANATION_MAP = new HashMap<>();
+	static {
+		EXPLANATION_MAP.put(OpCode.AALOAD, StringTable.AALOAD_TEXT);
+		EXPLANATION_MAP.put(OpCode.ALOAD_0, StringTable.ALOAD_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.ALOAD_1, StringTable.ALOAD_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.ALOAD_2, StringTable.ALOAD_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.ALOAD_3, StringTable.ALOAD_3_TEXT);
+		EXPLANATION_MAP.put(OpCode.ASTORE, StringTable.ASTORE_TEXT);
+		EXPLANATION_MAP.put(OpCode.ASTORE_0, StringTable.ASTORE_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.ASTORE_1, StringTable.ASTORE_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.ASTORE_2, StringTable.ASTORE_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.ASTORE_3, StringTable.ASTORE_3_TEXT);
+		EXPLANATION_MAP.put(OpCode.BIPUSH, StringTable.BIPUSH_TEXT);
+		EXPLANATION_MAP.put(OpCode.BREAKPOINT, StringTable.BREAKPOINT_TEXT);
+		EXPLANATION_MAP.put(OpCode.DCMPG, StringTable.DCMPG_TEXT);
+		EXPLANATION_MAP.put(OpCode.DCONST_0, StringTable.DCONST_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.DCONST_1, StringTable.DCONST_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.DDIV, StringTable.DDIV_TEXT);
+		EXPLANATION_MAP.put(OpCode.DLOAD, StringTable.DLOAD_TEXT);
+		EXPLANATION_MAP.put(OpCode.DLOAD_0, StringTable.DLOAD_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.DLOAD_2, StringTable.DLOAD_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.DMUL, StringTable.DMUL_TEXT);
+		EXPLANATION_MAP.put(OpCode.DSTORE, StringTable.DSTORE_TEXT);
+		EXPLANATION_MAP.put(OpCode.DSTORE_0, StringTable.DSTORE_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.DSTORE_2, StringTable.DSTORE_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.DSUB, StringTable.DSUB_TEXT);
+		EXPLANATION_MAP.put(OpCode.FCONST_0, StringTable.FCONST_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.FCONST_2, StringTable.FCONST_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.FLOAD_0, StringTable.FLOAD_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.FMUL, StringTable.FMUL_TEXT);
+		EXPLANATION_MAP.put(OpCode.FSTORE_0, StringTable.FSTORE_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.FSUB, StringTable.FSUB_TEXT);
+		EXPLANATION_MAP.put(OpCode.GETSTATIC, StringTable.GETSTATIC_TEXT);
+		EXPLANATION_MAP.put(OpCode.GOTO, StringTable.GOTO_TEXT);
+		EXPLANATION_MAP.put(OpCode.I2B, StringTable.I2B_TEXT);
+		EXPLANATION_MAP.put(OpCode.IADD, StringTable.IADD_TEXT);
+		EXPLANATION_MAP.put(OpCode.IAND, StringTable.IAND_TEXT);
+		EXPLANATION_MAP.put(OpCode.IASTORE, StringTable.IASTORE_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_0, StringTable.ICONST_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_1, StringTable.ICONST_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_2, StringTable.ICONST_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_3, StringTable.ICONST_3_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_4, StringTable.ICONST_4_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_5, StringTable.ICONST_5_TEXT);
+		EXPLANATION_MAP.put(OpCode.ICONST_M1, StringTable.ICONST_M1_TEXT);
+		EXPLANATION_MAP.put(OpCode.IDIV, StringTable.IDIV_TEXT);
+		EXPLANATION_MAP.put(OpCode.IF_ICMPGT, StringTable.IF_ICMPGT_TEXT);
+		EXPLANATION_MAP.put(OpCode.IF_ICMPLT, StringTable.IF_ICMPLT_TEXT);
+		EXPLANATION_MAP.put(OpCode.IF_ICMPNE, StringTable.IF_ICMPNE_TEXT);
+		EXPLANATION_MAP.put(OpCode.IFEQ, StringTable.IFEQ_TEXT);
+		EXPLANATION_MAP.put(OpCode.IFLT, StringTable.IFLT_TEXT);
+		EXPLANATION_MAP.put(OpCode.IFNE, StringTable.IFNE_TEXT);
+		EXPLANATION_MAP.put(OpCode.IINC, StringTable.IINC_TEXT);
+		EXPLANATION_MAP.put(OpCode.ILOAD_0, StringTable.ILOAD_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.ILOAD_1, StringTable.ILOAD_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.ILOAD_2, StringTable.ILOAD_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.ILOAD_3, StringTable.ILOAD_3_TEXT);
+		EXPLANATION_MAP.put(OpCode.IMUL, StringTable.IMUL_TEXT);
+		EXPLANATION_MAP.put(OpCode.INVOKESTATIC, StringTable.INVOKESTATIC_TEXT);
+		EXPLANATION_MAP.put(OpCode.IOR, StringTable.IOR_TEXT);
+		EXPLANATION_MAP.put(OpCode.IREM, StringTable.IREM_TEXT);
+		EXPLANATION_MAP.put(OpCode.ISHL, StringTable.ISHL_TEXT);
+		EXPLANATION_MAP.put(OpCode.ISTORE, StringTable.ISTORE_TEXT);
+		EXPLANATION_MAP.put(OpCode.ISTORE_0, StringTable.ISTORE_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.ISTORE_1, StringTable.ISTORE_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.ISTORE_2, StringTable.ISTORE_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.ISTORE_3, StringTable.ISTORE_3_TEXT);
+		EXPLANATION_MAP.put(OpCode.IXOR, StringTable.IXOR_TEXT);
+		EXPLANATION_MAP.put(OpCode.JSR, StringTable.JSR_TEXT);
+		EXPLANATION_MAP.put(OpCode.LADD, StringTable.LADD_TEXT);
+		EXPLANATION_MAP.put(OpCode.LCONST_1, StringTable.LCONST_1_TEXT);
+		EXPLANATION_MAP.put(OpCode.LDC2_W, StringTable.LDC2_W_TEXT);
+		EXPLANATION_MAP.put(OpCode.LLOAD, StringTable.LLOAD_TEXT);
+		EXPLANATION_MAP.put(OpCode.LLOAD_0, StringTable.LLOAD_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.LLOAD_2, StringTable.LLOAD_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.LSTORE, StringTable.LSTORE_TEXT);
+		EXPLANATION_MAP.put(OpCode.LSTORE_0, StringTable.LSTORE_0_TEXT);
+		EXPLANATION_MAP.put(OpCode.LSTORE_2, StringTable.LSTORE_2_TEXT);
+		EXPLANATION_MAP.put(OpCode.MULTIANEWARRAY, StringTable.MULTIANEWARRAY_TEXT);
+		EXPLANATION_MAP.put(OpCode.POP, StringTable.POP_TEXT);
+		EXPLANATION_MAP.put(OpCode.RET, StringTable.RET_TEXT);
+		EXPLANATION_MAP.put(OpCode.TABLESWITCH, StringTable.TABLESWITCH_TEXT);
+
+	}
+
+	private static final long serialVersionUID = 1L;
 	ColoredLabel explanationLabel = new ColoredLabel("", Label.CENTER, Color.lightGray);
-	GrayButton stepButton = new GrayButton(StringTable.step);
-	GrayButton resetButton = new GrayButton(StringTable.reset);
-	GrayButton runButton = new GrayButton(StringTable.run);
-	GrayButton stopButton = new GrayButton(StringTable.stop);
+	GrayButton stepButton = new GrayButton(StringTable.STEP);
+	GrayButton resetButton = new GrayButton(StringTable.RESET);
+	GrayButton runButton = new GrayButton(StringTable.RUN);
+	GrayButton stopButton = new GrayButton(StringTable.STOP);
 	MethodAreaPanel methodAreaPanel;
 	LocalVarsPanel localVarsPanel;
 	OperandStackPanel operandStackPanel;
 	int pcRegister;
 	int optopRegister;
-	StackFrame currentFrame;
-	Method currentMethod;
+	transient StackFrame currentFrame;
+	transient Method currentMethod;
 	int bytecodeViewSize;
 	int[] theProgram;
 	String[] bytecodeMnemonics;
 	int maxStack;
 	int maxLocals;
-	ExceptionTableEntry[] exceptionTable;
-	ConstantPoolEntry[] constantPool;
+	transient ExceptionTableEntry[] exceptionTable;
+	transient ConstantPoolEntry[] constantPool;
 	boolean stoppedThreadWhenLeftPage = false;
 
 	// If the "run" button is pushed, a separate thread will be invoked that
 	// will cause the JVM to execute until the "stop" button is pressed.
-	Thread runner;
-	final int millisecondDelayBetweenSteps = 250;
+	transient Thread runner;
+	static final int MILLISECONDS_DELAY_BETWEEN_STEPS = 250;
+	boolean running;
 
+	@Override
 	public void init() {
 
 		theProgram = getTheProgram();
@@ -178,6 +269,7 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 	// If they leave the page, stop a Run button press, then restart
 	// automatically if they come back. In effect, leaving the page is like clicking
 	// the Stop button. Returning to the page is like clicking the Run button.
+	@Override
 	public void start() {
 		if (runner == null && stoppedThreadWhenLeftPage) {
 			stopButton.enable();
@@ -185,11 +277,13 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 			stepButton.disable();
 			resetButton.disable();
 			stoppedThreadWhenLeftPage = false;
+			running = true;
 			runner = new Thread(this);
 			runner.start();
 		}
 	}
 
+	@Override
 	public void stop() {
 		runButton.enable();
 		stepButton.enable();
@@ -203,6 +297,7 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 				runner.stop();
 			}
 			runner = null;
+			running = false;
 			stoppedThreadWhenLeftPage = true;
 		}
 	}
@@ -228,7 +323,7 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 	}
 
 	public void run() {
-		while (true) {
+		while (running) {
 			try {
 				pcRegister = currentMethod.executeNextInstruction();
 			} catch (BreakpointException be) {
@@ -245,8 +340,9 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 			}
 			updateStateDisplay();
 			try {
-				Thread.sleep(millisecondDelayBetweenSteps);
+				Thread.sleep(MILLISECONDS_DELAY_BETWEEN_STEPS);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
 		}
 	}
@@ -257,343 +353,25 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 
 		int nextOpCode = theProgram[pcRegister];
 
-		switch (nextOpCode) {
-
-		case OpCode.AALOAD:
-			explanationLabel.setLabelText(StringTable.aaloadText);
-			break;
-
-		case OpCode.ALOAD_0:
-			explanationLabel.setLabelText(StringTable.aload_0Text);
-			break;
-
-		case OpCode.ALOAD_1:
-			explanationLabel.setLabelText(StringTable.aload_1Text);
-			break;
-
-		case OpCode.ALOAD_2:
-			explanationLabel.setLabelText(StringTable.aload_2Text);
-			break;
-
-		case OpCode.ALOAD_3:
-			explanationLabel.setLabelText(StringTable.aload_3Text);
-			break;
-
-		case OpCode.ASTORE:
-			explanationLabel.setLabelText(StringTable.astoreText);
-			break;
-
-		case OpCode.ASTORE_0:
-			explanationLabel.setLabelText(StringTable.astore_0Text);
-			break;
-
-		case OpCode.ASTORE_1:
-			explanationLabel.setLabelText(StringTable.astore_1Text);
-			break;
-
-		case OpCode.ASTORE_2:
-			explanationLabel.setLabelText(StringTable.astore_2Text);
-			break;
-
-		case OpCode.ASTORE_3:
-			explanationLabel.setLabelText(StringTable.astore_3Text);
-			break;
-
-		case OpCode.BIPUSH:
-			explanationLabel.setLabelText(StringTable.bipushText);
-			break;
-
-		case OpCode.BREAKPOINT:
-			explanationLabel.setLabelText(StringTable.breakpointText);
-			break;
-
-		case OpCode.DCMPG:
-			explanationLabel.setLabelText(StringTable.dcmpgText);
-			break;
-
-		case OpCode.DCONST_0:
-			explanationLabel.setLabelText(StringTable.dconst_0Text);
-			break;
-
-		case OpCode.DCONST_1:
-			explanationLabel.setLabelText(StringTable.dconst_1Text);
-			break;
-
-		case OpCode.DDIV:
-			explanationLabel.setLabelText(StringTable.ddivText);
-			break;
-
-		case OpCode.DLOAD:
-			explanationLabel.setLabelText(StringTable.dloadText);
-			break;
-
-		case OpCode.DLOAD_0:
-			explanationLabel.setLabelText(StringTable.dload_0Text);
-			break;
-
-		case OpCode.DLOAD_2:
-			explanationLabel.setLabelText(StringTable.dload_2Text);
-			break;
-
-		case OpCode.DMUL:
-			explanationLabel.setLabelText(StringTable.dmulText);
-			break;
-
-		case OpCode.DSTORE:
-			explanationLabel.setLabelText(StringTable.dstoreText);
-			break;
-
-		case OpCode.DSTORE_0:
-			explanationLabel.setLabelText(StringTable.dstore_0Text);
-			break;
-
-		case OpCode.DSTORE_2:
-			explanationLabel.setLabelText(StringTable.dstore_2Text);
-			break;
-
-		case OpCode.DSUB:
-			explanationLabel.setLabelText(StringTable.dsubText);
-			break;
-
-		case OpCode.FCONST_0:
-			explanationLabel.setLabelText(StringTable.fconst_0Text);
-			break;
-
-		case OpCode.FCONST_2:
-			explanationLabel.setLabelText(StringTable.fconst_2Text);
-			break;
-
-		case OpCode.FLOAD_0:
-			explanationLabel.setLabelText(StringTable.fload_0Text);
-			break;
-
-		case OpCode.FMUL:
-			explanationLabel.setLabelText(StringTable.fmulText);
-			break;
-
-		case OpCode.FSTORE_0:
-			explanationLabel.setLabelText(StringTable.fstore_0Text);
-			break;
-
-		case OpCode.FSUB:
-			explanationLabel.setLabelText(StringTable.fsubText);
-			break;
-
-		case OpCode.GETSTATIC:
-			explanationLabel.setLabelText(StringTable.getstaticText);
-			break;
-
-		case OpCode.GOTO:
-			explanationLabel.setLabelText(StringTable.gotoText);
-			break;
-
-		case OpCode.IADD:
-			explanationLabel.setLabelText(StringTable.iaddText);
-			break;
-
-		case OpCode.IAND:
-			explanationLabel.setLabelText(StringTable.iandText);
-			break;
-
-		case OpCode.IASTORE:
-			explanationLabel.setLabelText(StringTable.iastoreText);
-			break;
-
-		case OpCode.ICONST_M1:
-			explanationLabel.setLabelText(StringTable.iconst_m1Text);
-			break;
-
-		case OpCode.ICONST_0:
-			explanationLabel.setLabelText(StringTable.iconst_0Text);
-			break;
-
-		case OpCode.ICONST_1:
-			explanationLabel.setLabelText(StringTable.iconst_1Text);
-			break;
-
-		case OpCode.ICONST_2:
-			explanationLabel.setLabelText(StringTable.iconst_2Text);
-			break;
-
-		case OpCode.ICONST_3:
-			explanationLabel.setLabelText(StringTable.iconst_3Text);
-			break;
-
-		case OpCode.ICONST_4:
-			explanationLabel.setLabelText(StringTable.iconst_4Text);
-			break;
-
-		case OpCode.ICONST_5:
-			explanationLabel.setLabelText(StringTable.iconst_5Text);
-			break;
-
-		case OpCode.IF_ICMPGT:
-			explanationLabel.setLabelText(StringTable.if_icmpgtText);
-			break;
-
-		case OpCode.IF_ICMPLT:
-			explanationLabel.setLabelText(StringTable.if_icmpltText);
-			break;
-
-		case OpCode.IF_ICMPNE:
-			explanationLabel.setLabelText(StringTable.if_icmpneText);
-			break;
-
-		case OpCode.IDIV:
-			explanationLabel.setLabelText(StringTable.idivText);
-			break;
-
-		case OpCode.IFEQ:
-			explanationLabel.setLabelText(StringTable.ifeqText);
-			break;
-
-		case OpCode.IFLT:
-			explanationLabel.setLabelText(StringTable.ifltText);
-			break;
-
-		case OpCode.IFNE:
-			explanationLabel.setLabelText(StringTable.ifneText);
-			break;
-
-		case OpCode.IINC:
-			explanationLabel.setLabelText(StringTable.iincText);
-			break;
-
-		case OpCode.ILOAD_0:
-			explanationLabel.setLabelText(StringTable.iload_0Text);
-			break;
-
-		case OpCode.ILOAD_1:
-			explanationLabel.setLabelText(StringTable.iload_1Text);
-			break;
-
-		case OpCode.ILOAD_2:
-			explanationLabel.setLabelText(StringTable.iload_2Text);
-			break;
-
-		case OpCode.ILOAD_3:
-			explanationLabel.setLabelText(StringTable.iload_3Text);
-			break;
-
-		case OpCode.IMUL:
-			explanationLabel.setLabelText(StringTable.imulText);
-			break;
-
-		case OpCode.I2B:
-			explanationLabel.setLabelText(StringTable.i2bText);
-			break;
-
-		case OpCode.INVOKESTATIC:
-			explanationLabel.setLabelText(StringTable.invokestaticText);
-			break;
-
-		case OpCode.IOR:
-			explanationLabel.setLabelText(StringTable.iorText);
-			break;
-
-		case OpCode.IREM:
-			explanationLabel.setLabelText(StringTable.iremText);
-			break;
-
-		case OpCode.ISHL:
-			explanationLabel.setLabelText(StringTable.ishlText);
-			break;
-
-		case OpCode.ISTORE:
-			explanationLabel.setLabelText(StringTable.istoreText);
-			break;
-
-		case OpCode.ISTORE_0:
-			explanationLabel.setLabelText(StringTable.istore_0Text);
-			break;
-
-		case OpCode.ISTORE_1:
-			explanationLabel.setLabelText(StringTable.istore_1Text);
-			break;
-
-		case OpCode.ISTORE_2:
-			explanationLabel.setLabelText(StringTable.istore_2Text);
-			break;
-
-		case OpCode.ISTORE_3:
-			explanationLabel.setLabelText(StringTable.istore_3Text);
-			break;
-
-		case OpCode.IXOR:
-			explanationLabel.setLabelText(StringTable.ixorText);
-			break;
-
-		case OpCode.JSR:
-			explanationLabel.setLabelText(StringTable.jsrText);
-			break;
-
-		case OpCode.LADD:
-			explanationLabel.setLabelText(StringTable.laddText);
-			break;
-
-		case OpCode.LCONST_1:
-			explanationLabel.setLabelText(StringTable.lconst_1Text);
-			break;
-
-		case OpCode.LDC2_W:
-			explanationLabel.setLabelText(StringTable.ldc2_wText);
-			break;
-
-		case OpCode.LLOAD:
-			explanationLabel.setLabelText(StringTable.lloadText);
-			break;
-
-		case OpCode.LLOAD_0:
-			explanationLabel.setLabelText(StringTable.lload_0Text);
-			break;
-
-		case OpCode.LLOAD_2:
-			explanationLabel.setLabelText(StringTable.lload_2Text);
-			break;
-
-		case OpCode.LSTORE:
-			explanationLabel.setLabelText(StringTable.lstoreText);
-			break;
-
-		case OpCode.LSTORE_0:
-			explanationLabel.setLabelText(StringTable.lstore_0Text);
-			break;
-
-		case OpCode.LSTORE_2:
-			explanationLabel.setLabelText(StringTable.lstore_2Text);
-			break;
-
-		case OpCode.MULTIANEWARRAY:
-			explanationLabel.setLabelText(StringTable.multianewarrayText);
-			break;
-
-		case OpCode.POP:
-			explanationLabel.setLabelText(StringTable.popText);
-			break;
-
-		case OpCode.RET:
-			explanationLabel.setLabelText(StringTable.retText);
-			break;
-
-		case OpCode.TABLESWITCH:
-			explanationLabel.setLabelText(StringTable.tableswitchText);
-			break;
-
-		default:
-			explanationLabel.setLabelText("");
-			break;
+		String label = EXPLANATION_MAP.get(nextOpCode);
+		if (label == null) {
+			label = "";
 		}
+		explanationLabel.setLabelText(label);
+
 	}
 
 	// Make pretty border around entire applet panel
+	@Override
 	public Insets insets() {
 		return new Insets(5, 5, 5, 5);
 	}
 
+	@Override
 	public boolean action(Event evt, Object arg) {
 		if (evt.target instanceof Button) {
 			String bname = (String) arg;
-			if (bname.equals(StringTable.reset)) {
+			if (bname.equals(StringTable.RESET)) {
 
 				stopButton.disable();
 				runButton.enable();
@@ -601,7 +379,7 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 				resetButton.disable();
 				resetState();
 				updateStateDisplay();
-			} else if (bname.equals(StringTable.step)) {
+			} else if (bname.equals(StringTable.STEP)) {
 
 				resetButton.enable();
 				try {
@@ -610,7 +388,7 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 					// Ignore this. User can reset.
 				}
 				updateStateDisplay();
-			} else if (bname.equals(StringTable.run)) {
+			} else if (bname.equals(StringTable.RUN)) {
 
 				stopButton.enable();
 				runButton.disable();
@@ -620,7 +398,7 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 					runner = new Thread(this);
 					runner.start();
 				}
-			} else if (bname.equals(StringTable.stop)) {
+			} else if (bname.equals(StringTable.STOP)) {
 
 				runButton.enable();
 				stepButton.enable();
@@ -665,13 +443,13 @@ public abstract class JVMSimulator extends Applet implements Runnable {
 	// Some methods don't have an exception table. They can
 	// use this default implementation of getExceptionTable
 	public ExceptionTableEntry[] getExceptionTable() {
-		return null;
+		return new ExceptionTableEntry[] {};
 	}
 
 	// All methods have a constant pool, but not all simulations
 	// use it. Those that don't use a constant pool can
 	// use this default implementation of getConstantPool
 	public ConstantPoolEntry[] getConstantPool() {
-		return null;
+		return new ConstantPoolEntry[] {};
 	}
 }

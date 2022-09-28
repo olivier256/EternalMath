@@ -56,6 +56,8 @@ package com.artima.jvmsim;
  * @author Bill Venners
  */
 class JVMSimError extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
 	JVMSimError() {
 	}
 

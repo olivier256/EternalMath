@@ -1,3 +1,5 @@
+package com.artima;
+
 /*
 * Copyright (c) 1996, 1997 Bill Venners. All Rights Reserved.
 *
@@ -45,23 +47,86 @@
 * RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
 * DERIVATIVES.
 */
-package com.artima.jvmsim;
-
-import java.awt.Button;
 import java.awt.Color;
 
+import com.artima.jvmsim.JVMSimulator;
+import com.artima.jvmsim.OpCode;
+
 /**
- * This class simply provides a button that is colored gray.
+ * This class is the personality module for the Eternal Math simulation applet.
  *
  * @author Bill Venners
  */
-class GrayButton extends Button {
+public class EternalMath extends JVMSimulator {
 
 	private static final long serialVersionUID = 1L;
 
-	GrayButton(String label) {
+	private static final String APPLET_TITLE = "ETERNAL MATH";
 
-		super(label);
-		setBackground(Color.lightGray);
+	private static final Color appletBackgroundColor = Color.blue;
+	private static final Color stackAreaColor = Color.cyan;
+	private static final Color methodAreaColor = Color.cyan;
+	private static final Color titleColor = Color.yellow;
+	private static final Color explanationLabelColor = Color.yellow;
+
+	private static final int BYTE_CODE_VIEW_SIZE = 13;
+	private static final int MAX_STACK = 2;
+	private static final int MAX_LOCALS = 1;
+
+	@Override
+	public int[] getTheProgram() {
+		return new int[] { OpCode.ICONST_0, OpCode.ISTORE_0, OpCode.IINC, 0, 1, OpCode.ILOAD_0, OpCode.ICONST_2,
+				OpCode.IMUL, OpCode.ISTORE_0, OpCode.GOTO, (byte) 0xff, (byte) 0xf9 };
+	}
+
+	@Override
+	public int getBytecodeViewSize() {
+		return BYTE_CODE_VIEW_SIZE;
+	}
+
+	@Override
+	public int getMaxStack() {
+		return MAX_STACK;
+	}
+
+	@Override
+	public int getMaxLocals() {
+		return MAX_LOCALS;
+	}
+
+	@Override
+	public Color getMethodAreaColor() {
+		return methodAreaColor;
+	}
+
+	@Override
+	public Color getStackAreaColor() {
+		return stackAreaColor;
+	}
+
+	@Override
+	public Color getExplanationLabelColor() {
+		return explanationLabelColor;
+	}
+
+	@Override
+	public Color getTitleColor() {
+		return titleColor;
+	}
+
+	@Override
+	public Color getAppletBackgroundColor() {
+		return appletBackgroundColor;
+	}
+
+	@Override
+	public String getAppletTitle() {
+		return APPLET_TITLE;
+	}
+
+	@Override
+	public String[] getBytecodeMnemonics() {
+		return new String[] { "iconst_0", "istore_0", "iinc 0 1", "", "", "iload_0", "iconst_2", "imul", "istore_0",
+				"goto 2", "", "" };
 	}
 }

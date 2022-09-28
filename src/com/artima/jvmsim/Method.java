@@ -55,12 +55,12 @@ package com.artima.jvmsim;
  */
 class Method {
 
-	private final static int EQ = 0;
-	private final static int NE = 1;
-	private final static int LT = 2;
-	private final static int LE = 3;
-	private final static int GT = 4;
-	private final static int GE = 5;
+	private static final int EQ = 0;
+	private static final int NE = 1;
+	private static final int LT = 2;
+	private static final int LE = 3;
+	private static final int GT = 4;
+	private static final int GE = 5;
 
 	private int pc; // the program counter register
 	private byte[] code; // the method's bytecode stream
@@ -1451,7 +1451,6 @@ class Method {
 
 	private void executeMULTIANEWARRAY() {
 
-		int index = getShortOperand(pc + 1);
 		int dim = code[pc + 3];
 		if (dim < 1) {
 			throw new JVMSimError();

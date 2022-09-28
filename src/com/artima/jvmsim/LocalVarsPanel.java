@@ -62,28 +62,22 @@ import java.awt.Panel;
  */
 class LocalVarsPanel extends Panel {
 
-	private int memoryLocationsVisibleCount;
+	private static final long serialVersionUID = 1L;
 
 	private Label[] pointer;
 	private Label[] address;
 	private Label[] wordValue;
 	private Label[] logicalValue;
 
-	private int firstVisibleRow;
-	private int currentProgramCounterRow;
-
-	private ColoredLabel pcRegister;
-
 	LocalVarsPanel(int memoryLocationsVisibleCount) {
 
-		this.memoryLocationsVisibleCount = memoryLocationsVisibleCount;
 		pointer = new Label[memoryLocationsVisibleCount];
 		address = new Label[memoryLocationsVisibleCount];
 		wordValue = new Label[memoryLocationsVisibleCount];
 		logicalValue = new Label[memoryLocationsVisibleCount];
 
 		// Initialize the title
-		Label title = new Label(StringTable.localVariables, Label.CENTER);
+		Label title = new Label(StringTable.LOCAL_VARIABLES, Label.CENTER);
 		title.setFont(new Font("Helvetica", Font.BOLD, 11));
 
 		// Initialize column titles
@@ -92,9 +86,9 @@ class LocalVarsPanel extends Panel {
 		columnTitles.setLayout(new GridSnapLayout(1, 9, hComponentCellWidths));
 		columnTitles.setFont(new Font("Helvetica", Font.ITALIC, 11));
 		columnTitles.add(new Label("", Label.CENTER));
-		columnTitles.add(new Label(StringTable.index, Label.CENTER));
-		columnTitles.add(new Label(StringTable.hexValue, Label.CENTER));
-		columnTitles.add(new Label(StringTable.value, Label.LEFT));
+		columnTitles.add(new Label(StringTable.INDEX, Label.CENTER));
+		columnTitles.add(new Label(StringTable.HEX_VALUE, Label.CENTER));
+		columnTitles.add(new Label(StringTable.VALUE, Label.LEFT));
 
 		// Initialize the 4 column view of the method
 		Panel methodView = new Panel();
@@ -134,7 +128,8 @@ class LocalVarsPanel extends Panel {
 		// Assume length of array is same as memoryLocationsVisibleCount,
 		// because that is supposed to be maxLocals anyway.
 		int len = localVars.length;
-		for (int i = 0; i < len; ++i) {
+		int i = 0;
+		while (i < len) {
 
 			address[i].setText(Integer.toString(i));
 
@@ -190,10 +185,12 @@ class LocalVarsPanel extends Panel {
 				wordValue[i].setText(" OBJREF ");
 				logicalValue[i].setText((locVar.getClass()).getName());
 			}
+			++i;
 		}
 	}
 
-	public Insets insets() {
+	@Override
+	public Insets getInsets() {
 		return new Insets(5, 5, 5, 5);
 	}
 }

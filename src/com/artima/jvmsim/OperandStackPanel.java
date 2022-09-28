@@ -62,6 +62,14 @@ import java.awt.Panel;
  */
 class OperandStackPanel extends Panel {
 
+	private static final String CENTER = "Center";
+
+	private static final String TIMES_ROMAN = "TimesRoman";
+
+	private static final String HELVETICA = "Helvetica";
+
+	private static final long serialVersionUID = 1L;
+
 	private int memoryLocationsVisibleCount;
 
 	private Label[] pointer;
@@ -84,42 +92,42 @@ class OperandStackPanel extends Panel {
 		logicalValue = new Label[memoryLocationsVisibleCount];
 
 		// Initialize the title
-		Label title = new Label(StringTable.operandStack, Label.CENTER);
-		title.setFont(new Font("Helvetica", Font.BOLD, 11));
+		Label title = new Label(StringTable.OPERAND_STACK, Label.CENTER);
+		title.setFont(new Font(HELVETICA, Font.BOLD, 11));
 
 		// Initialize the labelled pc register panel
 		Panel registerPanel = new Panel();
 		registerPanel.setLayout(new BorderLayout(5, 5));
 		optopRegister = new ColoredLabel("0000", Label.CENTER, Color.lightGray);
-		optopRegister.setFont(new Font("TimesRoman", Font.PLAIN, 11));
-		Label pcRegTitle = new Label(StringTable.optop, Label.RIGHT);
-		pcRegTitle.setFont(new Font("Helvetica", Font.ITALIC, 11));
+		optopRegister.setFont(new Font(TIMES_ROMAN, Font.PLAIN, 11));
+		Label pcRegTitle = new Label(StringTable.OPTOP, Label.RIGHT);
+		pcRegTitle.setFont(new Font(HELVETICA, Font.ITALIC, 11));
 		registerPanel.add("East", optopRegister);
-		registerPanel.add("Center", pcRegTitle);
+		registerPanel.add(CENTER, pcRegTitle);
 
 		// Put the title and the pc register panel on the same panel
 		Panel titleRegisterPanel = new Panel();
 		titleRegisterPanel.setLayout(new BorderLayout());
 		titleRegisterPanel.add("West", registerPanel);
-		titleRegisterPanel.add("Center", title);
+		titleRegisterPanel.add(CENTER, title);
 
 		// Initialize column titles
 		Panel columnTitles = new Panel();
 		int[] hComponentCellWidths = { 2, 2, 2, 3 };
 		columnTitles.setLayout(new GridSnapLayout(1, 9, hComponentCellWidths));
-		columnTitles.setFont(new Font("Helvetica", Font.ITALIC, 11));
+		columnTitles.setFont(new Font(HELVETICA, Font.ITALIC, 11));
 		columnTitles.add(new Label("", Label.CENTER));
-		columnTitles.add(new Label(StringTable.offset, Label.CENTER));
-		columnTitles.add(new Label(StringTable.hexValue, Label.CENTER));
-		columnTitles.add(new Label(StringTable.value, Label.LEFT));
+		columnTitles.add(new Label(StringTable.OFFSET, Label.CENTER));
+		columnTitles.add(new Label(StringTable.HEX_VALUE, Label.CENTER));
+		columnTitles.add(new Label(StringTable.VALUE, Label.LEFT));
 
 		// Initialize the 4 column view of the method
 		Panel methodView = new Panel();
 		methodView.setLayout(new GridSnapLayout(memoryLocationsVisibleCount, 9, hComponentCellWidths));
 		methodView.setBackground(Color.lightGray);
-		Font plainFont = new Font("TimesRoman", Font.PLAIN, 11);
+		Font plainFont = new Font(TIMES_ROMAN, Font.PLAIN, 11);
 		methodView.setFont(plainFont);
-		Font italicFont = new Font("TimesRoman", Font.ITALIC, 11);
+		Font italicFont = new Font(TIMES_ROMAN, Font.ITALIC, 11);
 
 		for (int i = 0; i < memoryLocationsVisibleCount; ++i) {
 
@@ -140,18 +148,19 @@ class OperandStackPanel extends Panel {
 		Panel methodViewWithTitles = new Panel();
 		methodViewWithTitles.setLayout(new BorderLayout());
 		methodViewWithTitles.add("North", columnTitles);
-		methodViewWithTitles.add("Center", methodView);
+		methodViewWithTitles.add(CENTER, methodView);
 
 		setLayout(new BorderLayout());
 		add("North", titleRegisterPanel);
-		add("Center", methodViewWithTitles);
+		add(CENTER, methodViewWithTitles);
 	}
 
 	public void updateView(int optop, Object[] operandStack) {
 		// Assume length of array is one less that memoryLocationsVisibleCount,
 		// which should equal maxStack + 1.
 		int len = operandStack.length;
-		for (int i = 0; i < len; ++i) {
+		int i = 0;
+		while (i < len) {
 
 			address[i].setText(Integer.toString(i));
 
@@ -207,6 +216,7 @@ class OperandStackPanel extends Panel {
 				wordValue[i].setText(" OBJREF ");
 				logicalValue[i].setText((locVar.getClass()).getName());
 			}
+			++i;
 		}
 
 		optopRegister.setLabelText("    " + Integer.toString(optop));
@@ -215,11 +225,12 @@ class OperandStackPanel extends Panel {
 		pointer[currentOptopRow].setText("");
 
 		// Place the "optop>" pointer
-		pointer[optop].setText(StringTable.optopPointer);
+		pointer[optop].setText(StringTable.OPTOP_POINTER);
 		currentOptopRow = optop;
 	}
 
-	public Insets insets() {
+	@Override
+	public Insets getInsets() {
 		return new Insets(5, 5, 5, 5);
 	}
 }

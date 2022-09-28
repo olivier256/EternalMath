@@ -63,6 +63,7 @@ import java.awt.LayoutManager;
  *
  * @author Bill Venners
  */
+@SuppressWarnings("deprecation")
 class GridSnapLayout implements LayoutManager {
 
 	// rows and cols are the number of rows and columns of the grid upon
@@ -83,9 +84,11 @@ class GridSnapLayout implements LayoutManager {
 	}
 
 	public void addLayoutComponent(String name, Component comp) {
+		// Not needed
 	}
 
 	public void removeLayoutComponent(Component comp) {
+		// Not needed
 	}
 
 	// Calculate preferred size as if each component were taking an equal
@@ -190,8 +193,10 @@ class GridSnapLayout implements LayoutManager {
 
 		// For each row and column of components (not grid cells) position
 		// the component.
-		for (int c = 0, x = parentInsets.left; c < colCount; c++) {
-			for (int r = 0, y = parentInsets.top; r < rowCount; r++) {
+		int x = parentInsets.left;
+		for (int c = 0; c < colCount; c++) {
+			int y = parentInsets.top;
+			for (int r = 0; r < rowCount; r++) {
 
 				int i = r * colCount + c;
 				if (i < componentCount) {

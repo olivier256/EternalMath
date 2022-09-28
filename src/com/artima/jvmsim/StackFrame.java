@@ -54,6 +54,7 @@ package com.artima.jvmsim;
  */
 class StackFrame {
 
+	private static final String OPTOP2 = "optop = ";
 	// optop is pointer to top of operand stack. Always points
 	// to next location.
 	private int optop = 0;
@@ -95,7 +96,7 @@ class StackFrame {
 		if (i + 1 >= localVars.length) { // use i + 1 because doubles take two
 			throw new JVMSimError();
 		}
-		localVars[i] = new Double(theDouble);
+		localVars[i] = Double.valueOf(theDouble);
 		localVars[i + 1] = null;
 	}
 
@@ -103,21 +104,21 @@ class StackFrame {
 		if (i >= localVars.length) {
 			throw new JVMSimError();
 		}
-		localVars[i] = new Float(val);
+		localVars[i] = Float.valueOf(val);
 	}
 
 	void setLocalInt(int i, int val) {
 		if (i >= localVars.length) {
 			throw new JVMSimError();
 		}
-		localVars[i] = new Integer(val);
+		localVars[i] = Integer.valueOf(val);
 	}
 
 	void setLocalLong(int i, long theLong) {
 		if (i + 1 >= localVars.length) { // use i + 1 because longs take two
 			throw new JVMSimError();
 		}
-		localVars[i] = new Long(theLong);
+		localVars[i] = Long.valueOf(theLong);
 		localVars[i + 1] = null;
 	}
 
@@ -165,41 +166,41 @@ class StackFrame {
 
 	void pushDouble(double theDouble) { // untested
 		if (optop >= operandStack.length) {
-			throw new JVMSimError("optop = " + optop);
+			throw new JVMSimError(OPTOP2 + optop);
 		}
-		operandStack[optop] = new Double(theDouble);
+		operandStack[optop] = Double.valueOf(theDouble);
 		operandStack[optop + 1] = null;
 		optop += 2; // A double occupies two words on the stack
 	}
 
 	void pushFloat(float f) {
 		if (optop >= operandStack.length) {
-			throw new JVMSimError("optop = " + optop);
+			throw new JVMSimError(OPTOP2 + optop);
 		}
-		operandStack[optop] = new Float(f);
+		operandStack[optop] = Float.valueOf(f);
 		++optop;
 	}
 
 	void pushInt(int val) {
 		if (optop >= operandStack.length) {
-			throw new JVMSimError("optop = " + optop);
+			throw new JVMSimError(OPTOP2 + optop);
 		}
-		operandStack[optop] = new Integer(val);
+		operandStack[optop] = Integer.valueOf(val);
 		++optop;
 	}
 
 	void pushLong(long theLong) { // untested
 		if (optop >= operandStack.length) {
-			throw new JVMSimError("optop = " + optop);
+			throw new JVMSimError(OPTOP2 + optop);
 		}
-		operandStack[optop] = new Long(theLong);
+		operandStack[optop] = Long.valueOf(theLong);
 		operandStack[optop + 1] = null;
 		optop += 2; // A long occupies two words on the stack
 	}
 
 	void pushObject(Object theObject) {
 		if (optop >= operandStack.length) {
-			throw new JVMSimError("optop = " + optop);
+			throw new JVMSimError(OPTOP2 + optop);
 		}
 		operandStack[optop] = theObject;
 		++optop;
@@ -207,7 +208,7 @@ class StackFrame {
 
 	void pushReturnAddress(ReturnAddress retAddr) {
 		if (optop >= operandStack.length) {
-			throw new JVMSimError("optop = " + optop);
+			throw new JVMSimError(OPTOP2 + optop);
 		}
 		operandStack[optop] = retAddr;
 		++optop;

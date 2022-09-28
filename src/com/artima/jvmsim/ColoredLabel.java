@@ -61,6 +61,7 @@ import java.awt.Panel;
  */
 class ColoredLabel extends Panel {
 
+	private static final long serialVersionUID = 1L;
 	private Label theLabel;
 
 	ColoredLabel(String label, int alignment, Color color) {
@@ -76,7 +77,8 @@ class ColoredLabel extends Panel {
 		theLabel.setText(s);
 	}
 
-	public Insets insets() {
+	@Override
+	public Insets getInsets() {
 		return new Insets(0, 0, 0, 0);
 	}
 }

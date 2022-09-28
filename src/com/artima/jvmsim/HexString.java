@@ -55,10 +55,10 @@ package com.artima.jvmsim;
  */
 class HexString {
 
-	private final String hexChar = "0123456789abcdef";
-	private StringBuffer buf = new StringBuffer();
+	private static final String HEX_CHAR = "0123456789abcdef";
+	private StringBuilder buf = new StringBuilder();
 
-	void Convert(int val, int maxNibblesToConvert) {
+	void convert(int val, int maxNibblesToConvert) {
 
 		buf.setLength(0);
 
@@ -77,7 +77,7 @@ class HexString {
 			int remainder = v & 0xf;
 
 			// Convert nibble to a character and insert it into the beginning of the string
-			buf.insert(0, hexChar.charAt(remainder));
+			buf.insert(0, HEX_CHAR.charAt(remainder));
 
 			// Shift the int to the right four bits
 			v >>>= 4;
@@ -86,7 +86,7 @@ class HexString {
 
 	HexString(int val, int minWidth) {
 
-		Convert(val, minWidth);
+		convert(val, minWidth);
 
 		int charsNeeded = minWidth - buf.length();
 		for (int i = 0; i < charsNeeded; ++i) {

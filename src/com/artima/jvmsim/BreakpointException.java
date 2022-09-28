@@ -54,6 +54,8 @@ package com.artima.jvmsim;
  * @author Bill Venners
  */
 class BreakpointException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	BreakpointException() {
 	}
 
